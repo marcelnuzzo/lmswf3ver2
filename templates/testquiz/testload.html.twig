@@ -5,6 +5,24 @@
 {% block body %}
 
 <h1>Salut !!!</h1>
-{{ num }}
-
+{% for tab in tabQuestion %}
+{{ tab }}<br>
+{% endfor %}
+<hr>
+{% for tab in choice %}
+{{ tab }}<br>
+{% endfor %}
+<hr>
+{% for tab in tabProposition %}
+{{ tab }}<br>
+{% endfor %}
+<hr>
+{% for tab in tabCorrection %}
+{{ tab }}<br>
+{% endfor %}
+<hr>
+{% for tab in tabIndice %}
+{{ tab }}<br>
+{% endfor %}
+<hr>
 {% endblock %}

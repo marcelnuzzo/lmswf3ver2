@@ -28,6 +28,11 @@ class Question
      */
     private $answers;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $choice;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -77,6 +82,18 @@ class Question
                 $answer->setQuestions(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getChoice(): ?string
+    {
+        return $this->choice;
+    }
+
+    public function setChoice(string $choice): self
+    {
+        $this->choice = $choice;
 
         return $this;
     }

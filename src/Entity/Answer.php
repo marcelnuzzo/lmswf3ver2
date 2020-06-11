@@ -17,12 +17,12 @@ class Answer
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $proposition;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string")
      */
     private $correction;
 
@@ -37,24 +37,24 @@ class Answer
         return $this->id;
     }
 
-    public function getProposition(): ?int
+    public function getProposition(): ?string
     {
         return $this->proposition;
     }
 
-    public function setProposition(int $proposition): self
+    public function setProposition(string $proposition): self
     {
         $this->proposition = $proposition;
 
         return $this;
     }
 
-    public function getCorrection(): ?bool
+    public function getCorrection(): ?string
     {
         return $this->correction;
     }
 
-    public function setCorrection(bool $correction): self
+    public function setCorrection(string $correction): self
     {
         $this->correction = $correction;
 
