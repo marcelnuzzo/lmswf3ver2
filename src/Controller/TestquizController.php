@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Answer;
 use App\Entity\Question;
 use App\Entity\Testquiz;
+use App\Form\LoadCsvType;
 use App\Repository\QuestionRepository;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpFoundation\Request;
 
 class TestquizController extends AbstractController
 {
@@ -66,13 +67,22 @@ class TestquizController extends AbstractController
     }
 
     /**
-     * @Route("/testload", name="testquiz_testload")
+     * @Route("/loadcsv", name="testquiz_loadcsv")
      */
-    public function testload(EntityManagerInterface $manager, QuestionRepository $repo)
+    public function testload(EntityManagerInterface $manager, QuestionRepository $repo, Request $request)
     {
+        $form = $this->createForm(LoadCsvType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+        $donnee = $form->getData();
+        $fichier = $donnee['Chargement'];
+        //dd($fichier);
+
         $spreadsheet = new Spreadsheet();
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-        $spreadsheet = $reader->load("c://wamp64/www/Quizz.csv");
+        $spreadsheet = $reader->load($fichier);
         $row = 1;
         // Tableau où l'on récupère les questions (label)
         $tabQuestion = [];
@@ -94,7 +104,7 @@ class TestquizController extends AbstractController
         $nbProposition = 0;
         $line = "";
         // On ouvre le fichier de type csv
-        if (($handle = fopen("c://wamp64/www/Quizz.csv", "r")) !== FALSE) {
+        if (($handle = fopen($fichier, "r")) !== FALSE) {
             // On récupère les éléments séparés par un point virgule
             while (($data = fgetcsv($handle, 1000, ";", "'")) !== FALSE) {
                 // Si la ligne n'est pas vide
@@ -133,17 +143,13 @@ class TestquizController extends AbstractController
                                     $choice[] = $data[$c+1];
                                     $flagQuestion = 0;
                                 }
-                            }
-                            
-                            if($data[0] == $ref) {
-                                                    
+                            }                  
+                            if($data[0] == $ref) {                                        
                                 $nbQuestion++;
                                 $flagQuestion = 1;
-                                $tabIndice[] = $row;
-                                
+                                $tabIndice[] = $row;                           
                                 $flagProposition = 0;
-                            }
-                            
+                            }                       
                     }
                 } 
             }
@@ -173,8 +179,6 @@ class TestquizController extends AbstractController
             $var += $tab1[$i];
             $tab2[$i] = $var;
         }
-
-        //dd($tab2[1]);
         
         for($i=0; $i<$nbQuestion; $i++) {
             $question = new Question();
@@ -209,16 +213,10 @@ class TestquizController extends AbstractController
                     $ctr++;
         }   
             $manager->flush();
-        
-         return $this->render('testquiz/testload.html.twig', [
-            'controller_name' => 'TestquizController',
-            'spreadsheet' => $spreadsheet,
-            'num' => $num,
-            'tabQuestion' => $tabQuestion,
-            'choice' => $choice,
-            'tabProposition' => $tabProposition,
-            'tabCorrection' => $tabCorrection,
-            'tabIndice' => $tabIndice,
+    }
+         return $this->render('testquiz/loadcsv.html.twig', [
+            'form' => $form->createView(),
+            
         ]);
     }
 }

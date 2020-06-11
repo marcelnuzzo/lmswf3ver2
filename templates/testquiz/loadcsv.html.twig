@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil LMS-WF3{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Chargement du fichier CSV</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn btn-primary">Charger fichier csv</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
