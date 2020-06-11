@@ -15,6 +15,7 @@ use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use App\Service\Loadcsv;
 
 class TestquizController extends AbstractController
 {
@@ -69,154 +70,60 @@ class TestquizController extends AbstractController
     /**
      * @Route("/loadcsv", name="testquiz_loadcsv")
      */
-    public function testload(EntityManagerInterface $manager, QuestionRepository $repo, Request $request)
+    public function loadcsv(EntityManagerInterface $manager, QuestionRepository $repo, Request $request, Loadcsv $loadcsv)
     {
         $form = $this->createForm(LoadCsvType::class);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
 
-        $donnee = $form->getData();
-        $fichier = $donnee['Chargement'];
-        //dd($fichier);
+            $donnee = $form->getData();
+            $fichier = $donnee['Chargement'];
+            $nbQuestion = $loadcsv->getRead3($fichier)[0];
+            $tabQuestion = $loadcsv->getRead3($fichier)[1];
+            $choice = $loadcsv->getRead3($fichier)[2];
+            $nbProposition = $loadcsv->getRead3($fichier)[3];
+            $tab2 = $loadcsv->getRead3($fichier)[4];
+            $tabProposition = $loadcsv->getRead3($fichier)[5];
+            $tabCorrection = $loadcsv->getRead3($fichier)[6];
+      
+            for($i=0; $i<$nbQuestion; $i++) {
+                $question = new Question();
+                $question->setLabel($tabQuestion[$i])
+                        ->setChoice($choice[$i]);
 
-        $spreadsheet = new Spreadsheet();
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-        $spreadsheet = $reader->load($fichier);
-        $row = 1;
-        // Tableau où l'on récupère les questions (label)
-        $tabQuestion = [];
-        // On compte le nombre de questions
-        $nbQuestion = 0;
-        // On récupère le type de question (choix unique, choix multiple ...)
-        $choice = [];
-        // Tableau où l'on récupère les propositions
-        $tabProposition = [];
-        // Tableau où l'on récupère les corrections
-        $tabCorrection = [];
-        // Dès qu'on récupère la question on monte le flag
-        $flagQuestion = 0;
-        // Dès qu'on récupère le flagQuestion on monte le flag
-        $flagProposition = 0;
-        // Tableau où l'on récupère les numéros de ligne des questions ($row)
-        $tabIndice = [];
-
-        $nbProposition = 0;
-        $line = "";
-        // On ouvre le fichier de type csv
-        if (($handle = fopen($fichier, "r")) !== FALSE) {
-            // On récupère les éléments séparés par un point virgule
-            while (($data = fgetcsv($handle, 1000, ";", "'")) !== FALSE) {
-                // Si la ligne n'est pas vide
-                if(!(is_null($data))) {
-                    // Si le premier élément n'existe pas, on sort de la boucle
-                    if($data[0] == null) {
-                        break 1;
-                    }
-                    $num = count($data);              
-                    
-                    if($row == 1) {
-                        $ref = $data[0];
-                    }
-                    echo "<p> $num champs à la ligne $row: <br /></p>\n";
-                    $row++;
-                    
-                    if($flagProposition == 1 && $data[0] != $ref) {
-                        if($data)
-                        $tabProposition[] = $data[0];
-                        $tabCorrection[] = $data[1];  
-                        $nbProposition++;             
-                    }
-                    
-                    for ($c=0; $c < $num; $c++) {
-                                                    
-                            echo $data[$c] . "<br />\n"; 
-
-                            if($flagQuestion == 1) {
-                                $tabQuestion[] = $data[$c];
-                                $choix = $data[$c+1];
-                                if($choix != 'libre"') {
-                                    $choice[] = $data[$c+1];
-                                    $flagQuestion = 0;
-                                    $flagProposition = 1;
-                                } else {
-                                    $choice[] = $data[$c+1];
-                                    $flagQuestion = 0;
-                                }
-                            }                  
-                            if($data[0] == $ref) {                                        
-                                $nbQuestion++;
-                                $flagQuestion = 1;
-                                $tabIndice[] = $row;                           
-                                $flagProposition = 0;
-                            }                       
-                    }
-                } 
+                $manager->persist($question);
+                
             }
-            $line = $row-1;
-            
-                fclose($handle);
-            
-        }
-        // Ligne Question + le label de la question à supprimer
-        define("OFFSET", 2);
-        // tableau des nombres de propositions par question moins les questions libres
-        $tab = [];
-        // Calcul du nombre de propositions par question sans l'offset
-        $diff = ""; 
-        $tab[] = $line - $tabIndice[$nbQuestion-1];
-        
-        for($i=($nbQuestion-1); $i>0; $i--) {
-            $diff = $tabIndice[$i] - $tabIndice[$i-1];    
-            $tab[] = $diff - OFFSET;
-        } 
-        $tab1 = array_reverse($tab);
-        
-        $tab2 = [];
-        $tab2[] = $tab1[0];
-        $var = 0;
-        for($i=0; $i<$nbQuestion; $i++) {
-            $var += $tab1[$i];
-            $tab2[$i] = $var;
-        }
-        
-        for($i=0; $i<$nbQuestion; $i++) {
-            $question = new Question();
-            $question->setLabel($tabQuestion[$i])
-                    ->setChoice($choice[$i]);
-
-            $manager->persist($question);
-            
-        }
             $manager->flush();
 
-        $ctr = 0;
-        $repo = $manager->getRepository('App:Question');
-        $firstQuestion = $repo->findFirstId()[0]['id'];
-        $id = $firstQuestion;
+            $ctr = 0;
+            $repo = $manager->getRepository('App:Question');
+            $firstQuestion = $repo->findFirstId()[0]['id'];
+            $id = $firstQuestion;
             
-        for($j=1; $j<=$nbProposition; $j++) {   
-            if($j < $tab2[0]) {
-                $id = $id;
-            }
-            for($k=0; $k<($nbQuestion - 1); $k++) {
-                if($j == ($tab2[$k] + 1)) {
-                    $id = $id + 1;
+            for($j=1; $j<=$nbProposition; $j++) {   
+                if($j < $tab2[0]) {
+                    $id = $id;
                 }
-            }         
-            $answer = new Answer();
-            $answer->setProposition($tabProposition[$ctr])
-                    ->setCorrection($tabCorrection[$ctr])
-                    ->setQuestions($repo->find($id));
+                for($k=0; $k<($nbQuestion - 1); $k++) {
+                    if($j == ($tab2[$k] + 1)) {
+                        $id = $id + 1;
+                    }
+                }         
+                $answer = new Answer();
+                $answer->setProposition($tabProposition[$ctr])
+                        ->setCorrection($tabCorrection[$ctr])
+                        ->setQuestions($repo->find($id));
 
-                    $manager->persist($answer);
-                    $ctr++;
-        }   
+                        $manager->persist($answer);
+                        $ctr++;
+            }   
             $manager->flush();
-    }
+            return $this->redirectToRoute('homepage');
+        }
          return $this->render('testquiz/loadcsv.html.twig', [
-            'form' => $form->createView(),
-            
+            'form' => $form->createView(),      
         ]);
     }
 }
