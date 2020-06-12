@@ -46,6 +46,16 @@ class QuestionRepository extends ServiceEntityRepository
                     ;
     }
 
+    public function findByQId($id)
+    {
+        return $this->createQueryBuilder('q')
+                ->select('q.choice')
+                ->andWhere('q.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+    }
+
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */

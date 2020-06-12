@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Answer;
 use App\Entity\Question;
+use App\Entity\Quizz;
 use App\Entity\Testquiz;
 use App\Form\LoadCsvType;
 use App\Repository\QuestionRepository;
@@ -86,11 +87,15 @@ class TestquizController extends AbstractController
             $tab2 = $loadcsv->getRead3($fichier)[4];
             $tabProposition = $loadcsv->getRead3($fichier)[5];
             $tabCorrection = $loadcsv->getRead3($fichier)[6];
+
+            $quizz = new Quizz();
+            $manager->persist($quizz);
       
             for($i=0; $i<$nbQuestion; $i++) {
                 $question = new Question();
                 $question->setLabel($tabQuestion[$i])
-                        ->setChoice($choice[$i]);
+                        ->setChoice($choice[$i])
+                        ->setQuizz($quizz);
 
                 $manager->persist($question);
                 

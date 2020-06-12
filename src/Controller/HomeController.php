@@ -90,7 +90,6 @@ class HomeController extends AbstractController
             $tabPropo[] = $answers;
         }
         
-        //dd($toto);
         $answer = new Answer();
         $form = $this->createForm(Quiz4Type::class, $answer, [
             'question' => $question,
@@ -111,7 +110,8 @@ class HomeController extends AbstractController
         //dd($count); 
         if($form->isSubmitted() && $form->isValid()) {
             
-            $correction = $repo->findByCorrection($question);       
+            $correction = $repo->findByCorrection($question);  
+            dd($correction);     
             $correction = $correction[0]->getId();   
             $idProposition = $answer->getProposition();
            

@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Les quizz{% endblock %}
+
+{% block body %}
+
+{{ form_start(form) }}
+    
+
+    <h3>Questions</h3>
+    <ul class="questions">
+        {% for question in form.question %}
+            <li>{{ form_row(question.label) }}</li>
+            {% for answer in question.answers %}
+                <li>{{ answer.proposition }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    <button class="btn btn-primary" type="submit">
+        Valider
+    </button>
+{{ form_end(form) }}
+
+{% endblock %}

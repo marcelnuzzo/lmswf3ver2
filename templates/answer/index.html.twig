@@ -12,6 +12,7 @@
                 <th>Proposition</th>
                 <th>Correction</th>
                 <th>Question</th>
+                <th>Quizz</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,8 +21,9 @@
             <tr>
                 <td>{{ answer.id }}</td>
                 <td>{{ answer.proposition }}</td>
-                <td>{{ answer.correction ? 'Yes' : 'No' }}</td>
+                <td>{{ answer.correction }}</td>
                 <td>{{ answer.questions.label }}</td>
+                <td>{{ answer.questions.quizz.id }}</td>
                 <td>
                     <a href="{{ path('answer_show', {'id': answer.id}) }}">show</a>
                     <a href="{{ path('answer_edit', {'id': answer.id}) }}">edit</a>

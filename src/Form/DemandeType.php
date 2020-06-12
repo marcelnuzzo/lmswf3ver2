@@ -9,17 +9,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class QuestionType extends AbstractType
+class DemandeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-        ->add('label')
-        ->add('answers', CollectionType::class, [
+        
+        $builder->add('label', CollectionType::class, [
             'entry_type' => TestType::class,
             'entry_options' => ['label' => false],
         ]);
-        
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
