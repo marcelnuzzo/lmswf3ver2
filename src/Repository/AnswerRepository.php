@@ -44,6 +44,33 @@ class AnswerRepository extends ServiceEntityRepository
                 ->getResult();
     }
 
+    public function findFirstPropo() {
+        return $this->createQueryBuilder('a')
+                    ->select('a.id')
+                    ->orderBy('a.id', 'ASC')
+                    ->setMaxResults(1)
+                    ->getQuery()
+                    ->getResult()
+                    ;
+    }
+
+    public function findCountPropo()
+    {
+        return $this->createQueryBuilder('a')
+                ->select('count(a.id)')
+                ->getQuery()
+                ->getSingleScalarResult()
+                ;
+    }
+
+    public function findProposition()
+    {
+        return $this->createQueryBuilder('a')
+                ->select('a.proposition')
+                ->getQuery()
+                ->getResult();
+    }
+
     // /**
     //  * @return Answer[] Returns an array of Answer objects
     //  */

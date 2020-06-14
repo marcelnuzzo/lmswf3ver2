@@ -56,6 +56,26 @@ class QuestionRepository extends ServiceEntityRepository
                 ->getResult();
     }
 
+    public function findCountQuestion()
+    {
+        return $this->createQueryBuilder('q')
+                ->select('count(q.id)')
+                ->getQuery()
+                ->getSingleScalarResult()
+                ;
+    }
+
+    public function findCountLibre()
+    {
+        return $this->createQueryBuilder('q')
+                ->select('count(q.id)')
+                ->andWhere('q.choice = :choice')
+                ->setParameter('choice', 'libre"')
+                ->getQuery()
+                ->getSingleScalarResult()
+                ;
+    }
+
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */

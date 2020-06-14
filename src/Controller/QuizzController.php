@@ -6,6 +6,7 @@ use App\Entity\Quizz;
 use App\Entity\Answer;
 use App\Form\TestType;
 use App\Form\QuizzType;
+use App\Form\Test2Type;
 use App\Repository\QuizzRepository;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
@@ -49,6 +50,43 @@ class QuizzController extends AbstractController
         return $this->render('quizz/new.html.twig', [
             'quizz' => $quizz,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/toutvoir", name="quizz_toutvoir", methods={"GET","POST"})
+     */
+    public function toutvoir(Request $request, QuestionRepository $repo, AnswerRepository $answerRepo): Response
+    {
+        $firstQuestion = $repo->findFirstId()[0]['id'];
+        $countQuestion = $repo->findCountQuestion();
+        for($id=$firstQuestion; $id<($firstQuestion + $countQuestion); $id++) {
+            $question[] = $repo->find($id);
+            $choice[] = $repo->findByQId($id)[0]['choice'];
+        }
+
+        $countPropos = $answerRepo->findCountPropo();
+        for($i=0; $i<$countPropos; $i++) {
+            $propo[] = $answerRepo->findProposition()[$i]['proposition'];
+        }
+        //dd($propo);
+        
+        $answer = new Answer();
+        $form = $this->createForm(Test2Type::class, $answer, [
+            'choice' => $choice,
+            "propo" => $propo,
+        ]);
+        $form->handleRequest($request);
+        
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('quizz_index');
+            }
+        
+        return $this->render('quizz/toutvoir.html.twig', [      
+            'form' => $form->createView(),
+           
         ]);
     }
 
@@ -99,6 +137,7 @@ class QuizzController extends AbstractController
     /**
      * @Route("/montre/{id}", name="quizz_montre", methods={"GET","POST"})
      */
+    /*
     public function montre(Request $request, Quizz $quizz, AnswerRepository $repo): Response
     {
         $form = $this->createForm(QuizzType::class, $quizz);
@@ -118,6 +157,7 @@ class QuizzController extends AbstractController
             'answer' => $repo->findAll(),
         ]);
     }
+    */
 
     /**
      * @Route("/voir/{id}", name="quizz_voir", methods={"GET","POST"})
@@ -127,7 +167,7 @@ class QuizzController extends AbstractController
         $question = $repo->find($id);
         $choice = $repo->findByQId($id);
         $propo = $answerRepo->findPropo($id);
-        //dd($choice[0]['choice']);
+        //dd($propo);
         $answer = new Answer();
         $form = $this->createForm(TestType::class, $answer, [
             'choice' => $choice,
@@ -135,18 +175,16 @@ class QuizzController extends AbstractController
         ]);
         $form->handleRequest($request);
         
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('quizz_index');
         }
-
-        return $this->render('quizz/voir.html.twig', [
-            
+        return $this->render('quizz/voir.html.twig', [      
             'form' => $form->createView(),
             'answer' => $answer,
             'question' => $question
         ]);
     }
+
 }
