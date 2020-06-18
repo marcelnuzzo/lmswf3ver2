@@ -13,31 +13,36 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Service;
 use App\Service\formService;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class Quiz3Type extends AbstractType
 {
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-            
+        $proposition = $options['proposition'];
+        
         $builder
             
+            /*
             ->add('proposition', ChoiceType::class, [
-                'choices' => [
-                    '2 X 1 = 1' => '1',
-                    '2 X 1 = 2' => '2',
-                    '2 X 1 = 3' => '3'
-                ],
+                'choices' => [$proposition => 'choix'],
                 'expanded' => true,
-                'multiple' =>false,
+                'multiple' => false,
             ])
+            */
+            
+            ->add('proposition')
+            
         ;
+            
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Answer::class,
+            'proposition' => null,
         ]);
     }
 }

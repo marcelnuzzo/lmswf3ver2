@@ -24,6 +24,11 @@ class Quizz
      */
     private $question;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $titre;
+
     public function __construct()
     {
         $this->question = new ArrayCollection();
@@ -61,6 +66,18 @@ class Quizz
                 $question->setQuizz(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): self
+    {
+        $this->titre = $titre;
 
         return $this;
     }

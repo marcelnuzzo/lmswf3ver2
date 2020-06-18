@@ -49,29 +49,10 @@ class HomeController extends AbstractController
     {      
         $answers = $this->getDoctrine()
         ->getRepository(Answer::class)
-        ->findBy(['correction' => true]);
+        ->findAll();
+        //->findBy(['correction' => 'vrai"']);
         return $this->render('home/quiz.html.twig', [
             'answers' => $answers
-        ]);
-    }
-    
-
-    /**
-     * @Route("/quizUser", name="home_quizUser")
-     */
-    public function formQuiz(QuestionRepository $repo, Request $request, EntityManagerInterface $manager, AnswerRepository $qcms)
-    {
-        
-        $form = $this->createForm(QuizType::class);
-        $form2 = $this->createForm(Quiz2Type::class);
-        $question1 = $repo->find(1);
-        $question2 = $repo->find(2);
-       
-        return $this->render('home/quizUser.html.twig', [
-            'form' => $form->createView(),
-            'form2' => $form2->createView(),
-            'question1' => $question1,
-            'question2' => $question2,
         ]);
     }
 
@@ -82,7 +63,7 @@ class HomeController extends AbstractController
     {
         $question = $questionRepo->findFirstId()[0]['id'];
         $id = $question;
-        //dd($id);
+        
         $tabPropo = [];
         for($i=0; $i<3; $i++) {
             $answers = $repo->findPropo($id)[$i];
@@ -111,10 +92,17 @@ class HomeController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             
             $correction = $repo->findByCorrection($question);  
-            dd($correction);     
+            
             $correction = $correction[0]->getId();   
+            
+            //dd($correction);  
+            $info = $form->getData();
+            
+            dd($info);
             $idProposition = $answer->getProposition();
-           
+            
+            dd($idProposition);
+            
             if($correction == $idProposition){
                 $user->setOkquiz(true);
                 //dd($user);

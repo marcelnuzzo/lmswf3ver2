@@ -19,17 +19,17 @@ class TestType extends AbstractType
         $multiple = true;
         $typeForm = "";
 
-        if($choice[0]['choice'] == 'unique"') {
+        if($choice[0] == 'unique"') {
             $multiple = false;
             $expanded = true;
             $typeForm = 'choix';
         }
-        elseif($choice[0]['choice'] == 'multiple"') {
+        elseif($choice[0] == 'multiple"') {
             $multiple = true;
             $expanded = true;
             $typeForm = 'choix';
         }
-        elseif($choice[0]['choice'] == 'libre"') {
+        elseif($choice[0] == 'libre"') {
             $multiple = false;
             $expanded = false;
             $typeForm = 'libre';
@@ -40,9 +40,9 @@ class TestType extends AbstractType
         $builder
             ->add('proposition', ChoiceType::class, [
                 'choices' => [
-                    $propo[0]['proposition'] => 'choix 1',
-                    $propo[1]['proposition'] => 'choix 2',
-                    $propo[2]['proposition'] => 'choix 3',
+                    $propo[0] => 'choix 1',
+                    $propo[1] => 'choix 2',
+                    $propo[2] => 'choix 3',
                 ],
                 'expanded' => $expanded,
                 'multiple' => $multiple,

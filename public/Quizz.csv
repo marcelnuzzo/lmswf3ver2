@@ -1,0 +1,28 @@
+quizBakhtech
+Question
+"C'est quoi l'accessibilité numérique ?;unique"
+"Rendre le web accessible au aveugles;faux"
+"Pouvoir utiliser son téléphone partout;faux"
+"L'accessibilité numérique est la mise à la disposition de tous les individus, quels que soient leur matériel ou logiciel, leur infrastructure réseau, leur langue maternelle, leur culture, leur localisation géographique, ou leurs aptitudes physiques ou mentales, des ressources numériques.;vrai"
+Question
+"L'accessibilité numérique concerne ?;multiple"
+"le design;vrai"
+"la programmation;vrai"
+"le réseau internet utilisé;faux"
+Question
+"Lesquels correspondent à des normes d'accessibilité ?;multiple"
+"WCAG;vrai"
+"RGAA;vrai"
+"RAA;faux"
+Question
+"Comment rendre une balise <img> accessible;unique"
+"En rajoutant toujours un alt (alt=""alternatif_pertinent"");faux"
+"De pas rajouter de alt quand il s'agit d'une image décorative;faux"
+"Ajouter un alt pertinent (alt=""alternatif_pertinent"") et quand c'est une image décorative (alt="""");vrai"
+Question
+"Noter le nom d'une balise ou attribut obligatoire dans la balise <html> d'un site;libre"
+Question
+"Depuis quand l'accessibilité est elle obligatoire pour le service public ?;unique"
+"2000;faux"
+"2005;vrai"
+"2010;faux"

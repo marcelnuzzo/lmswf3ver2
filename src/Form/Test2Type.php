@@ -13,39 +13,49 @@ class Test2Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choice = $options['choice'];
-        $propo = $options['propo'];
-        $expanded = true;
-        $multiple = true;
+            
+        $builder
+            ->add('proposition');
+        /*
         $typeForm = "";
-        if($choice[0] == 'unique"') {
-            $multiple = false;
-            $expanded = true;
-            $typeForm = 'choix';
+        $choice = $options['choice'];
+        for($i=0; $i<6; $i++) {
+            
+            if($choice[$i] == 'unique"') {
+                $typeForm = 'unique';
+            }
+            elseif($choice[$i] == 'multiple"') {
+                $typeForm = 'multiple';
+            }
+            elseif($choice[$i] == 'libre"') {
+                $typeForm = 'libre';
+            }
         }
-        elseif($choice[0]['choice'] == 'multiple"') {
-            $multiple = true;
-            $expanded = true;
-            $typeForm = 'choix';
-        }
-        elseif($choice[0]['choice'] == 'libre"') {
-            $multiple = false;
-            $expanded = false;
-            $typeForm = 'libre';
-        }
+        $propo = $options['propo'];
         
-            if($typeForm == 'choix') {
+        for($i=0; $i<15; $i++) {
+            if($typeForm == 'unique') {
             
                 $builder
                     ->add('proposition', ChoiceType::class, [
                         'choices' => [
                             
-                            $propo[0] => 'choix 1',
-                            $propo[1] => 'choix 2',
-                            $propo[2] => 'choix 3',
+                            'test' => 'choix',
                         ],
-                        'expanded' => $expanded,
-                        'multiple' => $multiple,
+                        'expanded' => true,
+                        'multiple' => false,
+                    ])   
+                    ;
+            }
+            elseif($typeForm == 'multiple') {
+                $builder
+                    ->add('proposition', ChoiceType::class, [
+                        'choices' => [
+                            
+                            'test' => 'choix',
+                        ],
+                        'expanded' => true,
+                        'multiple' => true,
                     ])   
                     ;
             }
@@ -54,9 +64,10 @@ class Test2Type extends AbstractType
                     ->add('proposition', TextType::class)
                     ;
             }    
+        }
+        */
         
     }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

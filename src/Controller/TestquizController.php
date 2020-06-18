@@ -20,9 +20,11 @@ use App\Service\Loadcsv;
 
 class TestquizController extends AbstractController
 {
+  
     /**
      * @Route("/testquiz", name="testquiz")
      */
+    /*
     public function index(EntityManagerInterface $manager)
     {
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
@@ -67,6 +69,7 @@ class TestquizController extends AbstractController
             'controller_name' => 'TestquizController',
         ]);
     }
+    */
 
     /**
      * @Route("/loadcsv", name="testquiz_loadcsv")
@@ -87,8 +90,10 @@ class TestquizController extends AbstractController
             $tab2 = $loadcsv->getRead3($fichier)[4];
             $tabProposition = $loadcsv->getRead3($fichier)[5];
             $tabCorrection = $loadcsv->getRead3($fichier)[6];
+            $titre = $loadcsv->getRead3($fichier)[7];
 
             $quizz = new Quizz();
+            $quizz->setTitre($titre);
             $manager->persist($quizz);
       
             for($i=0; $i<$nbQuestion; $i++) {

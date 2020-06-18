@@ -17,7 +17,7 @@ class Answer
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $proposition;
 

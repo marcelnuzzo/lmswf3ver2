@@ -1,16 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Quizz index{% endblock %}
+{% block title %}Liste des quizz{% endblock %}
 
 {% block body %}
-    <h1>Quizz index</h1>
+    <h1>Liste des quizz</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Titre</th>
-                <th>actions</th>
             </tr>
         </thead>
         <tbody>
@@ -19,17 +18,17 @@
                 <td>{{ quizz.id }}</td>
                 <td>{{ quizz.titre }}</td>
                 <td>
-                    <a href="{{ path('quizz_show', {'id': quizz.id}) }}">show</a>
-                    <a href="{{ path('quizz_edit', {'id': quizz.id}) }}">edit</a>
+                    <a href="{{ path('quizz_toutvoir', {'id': quizz.id}) }}">Voir</a>
+                    
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">no records found</td>
+                <td colspan="3">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('quizz_new') }}">Create new</a>
+    <a href="{{ path('question_new') }}">Create new</a>
 {% endblock %}

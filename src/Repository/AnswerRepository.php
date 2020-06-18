@@ -28,7 +28,7 @@ class AnswerRepository extends ServiceEntityRepository
             ->andWhere('a.correction = :val')
             ->andWhere('a.questions = :idQuestion')
             ->setParameter('idQuestion', $question)
-            ->setParameter('val', true)
+            ->setParameter('val', 'vrai"')
             ->getQuery()
             ->getResult()
         ;
@@ -67,6 +67,27 @@ class AnswerRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
                 ->select('a.proposition')
+                ->getQuery()
+                ->getResult();
+    }
+
+    public function findOnePropo($id)
+    {
+        return $this->createQueryBuilder('a')
+                ->select('a.proposition')
+                ->andWhere('a.questions = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+    }
+
+    public function findIdAnswer($id)
+    {
+        return $this->createQueryBuilder('a')
+                ->select('a.id')
+                ->andWhere('a.questions = :id')
+                ->setParameter('id', $id)
+                ->setMaxResults(1)
                 ->getQuery()
                 ->getResult();
     }

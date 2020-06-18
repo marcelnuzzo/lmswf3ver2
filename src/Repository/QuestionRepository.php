@@ -35,7 +35,7 @@ class QuestionRepository extends ServiceEntityRepository
             return $stmt->fetchAll();
     }
 
-    public function findFirstId ()
+    public function findFirstId()
     {
         return $this->createQueryBuilder('q')
                     ->select('q.id')
@@ -52,6 +52,15 @@ class QuestionRepository extends ServiceEntityRepository
                 ->select('q.choice')
                 ->andWhere('q.id = :id')
                 ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+    }
+
+    public function findLibre()
+    {
+        return $this->createQueryBuilder('q')
+                ->andWhere('q.choice = :choice')
+                ->setParameter('choice', 'libre"' )
                 ->getQuery()
                 ->getResult();
     }

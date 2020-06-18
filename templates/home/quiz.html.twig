@@ -4,26 +4,61 @@
 
 {% block body %}
 
+<style>
+    .lead {
+        text-align: center;
+    }
+    .vert {
+        color: green;
+    }
+    .rouge {
+        color: red;
+    }
+    .jaune {
+        background-color: yellow;
+        text-transform: uppercase;
+    }
+    table, th, td {
+      padding: 10px;
+      border: 1px solid black;
+      border-collapse: collapse;
+      }
+</style>
+
 <div class="container mt-5">
+    <div class="jumbotron">
+        <h1 class="display-4 lead">Liste des questions et corrections aux différents quizz</h1>
+        <hr class="my-4">
+        <p class="lead"><strong>Le lien ci-dessous vous renvoi au RGAA 4.0</strong></p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="https://www.numerique.gouv.fr/uploads/RGAA-v4.0.pdf" role="button">Aller au document RGAA 4.0</a>
+        </p>
+    </div>
+
 <table class="table">
     <thead>
-        <tr>
+        <tr class="jaune">
             <th>Question</th>
-            <th>Correction</th>
-            <th>Proposition</th>
+            <th>Réponses</th>
+            <th>Corrections</th>
         </tr>
     </thead>
     <tbody>
         {% for answer in answers %}
         <tr>
             <td>
-            {{ answer.questions.label }}
+                {{ answer.questions.label }}
             </td>
             <td>
-            {{ answer.correction }}
+                {{ answer.proposition }}
             </td>
-            <td>
-            {{ answer.proposition }}
+            {% if answer.correction == 'vrai"' %}
+            <td class="vert">
+                <i class="fa fa-check-square" aria-hidden="true"></i>
+            {% else %}
+            <td class="rouge">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            {% endif %}
             </td>
         </tr>
         {% endfor %}

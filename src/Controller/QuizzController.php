@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Quizz;
 use App\Entity\Answer;
+use App\Form\QuizType;
 use App\Form\TestType;
+use App\Form\Quiz3Type;
+use App\Form\Quiz5Type;
 use App\Form\QuizzType;
 use App\Form\Test2Type;
 use App\Repository\QuizzRepository;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,12 +35,55 @@ class QuizzController extends AbstractController
     }
 
     /**
+     * @Route("/essaiform/{id}", name="quizz_essaiform")
+     */
+    /*
+    public function essaiform(Quizz $quizz, QuizzRepository $repo, EntityManagerInterface $manager, Request $request, QuestionRepository $qRepo) {
+        $quizz = $repo->find(3);
+        $choix = $qRepo->findLibre();
+        //dd($choix);
+        $form = $this->createForm(QuizzType::class, $quizz);
+        $form->handleRequest($request);
+        //echo "test";
+        //echo $_POST['name'];
+        if ($form->isSubmitted() && $form->isValid()) {
+            $info = $form->getData();
+            //dd($info);
+            echo("test");
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($quizz);
+            $entityManager->flush();
+
+            //return $this->redirectToRoute('quizz_index');
+        }
+
+
+        return $this->render('quizz/essaiform.html.twig', [
+            'form' => $form->createView(),
+            'quizz' => $quizz,
+            'choix' => $choix,
+        ]);
+    }
+    */
+
+    /**
+     * @Route("/list", name="quizz_list", methods={"GET"})
+     */
+    public function listquizz(QuizzRepository $repo): Response
+    {
+        return $this->render('quizz/list.html.twig', [
+            'quizzs' => $repo->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/new", name="quizz_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
         $quizz = new Quizz();
-        $form = $this->createForm(QuizzType::class, $quizz);
+        $form = $this->createForm(Quiz5Type::class, $quizz);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -54,10 +101,11 @@ class QuizzController extends AbstractController
     }
 
     /**
-     * @Route("/toutvoir", name="quizz_toutvoir", methods={"GET","POST"})
+     * @Route("/toutvoir/{id}", name="quizz_toutvoir", methods={"GET","POST"})
      */
-    public function toutvoir(Request $request, QuestionRepository $repo, AnswerRepository $answerRepo): Response
+    public function toutvoir(Answer $answer, $id, Request $request, QuestionRepository $repo, AnswerRepository $answerRepo, EntityManagerInterface $manager, Quizz $quizz)
     {
+        
         $firstQuestion = $repo->findFirstId()[0]['id'];
         $countQuestion = $repo->findCountQuestion();
         for($id=$firstQuestion; $id<($firstQuestion + $countQuestion); $id++) {
@@ -65,29 +113,54 @@ class QuizzController extends AbstractController
             $choice[] = $repo->findByQId($id)[0]['choice'];
         }
 
+        
         $countPropos = $answerRepo->findCountPropo();
         for($i=0; $i<$countPropos; $i++) {
             $propo[] = $answerRepo->findProposition()[$i]['proposition'];
         }
+        $propo = $propo[0];
         //dd($propo);
-        
-        $answer = new Answer();
-        $form = $this->createForm(Test2Type::class, $answer, [
+        $id = $repo->findFirstId()[0]['id'];
+        $rep = true;
+        //$proposition = $answerRepo->findPropo($id)[0]['proposition'];
+        //$answer = new Answer();
+        /*
+        $this->createForm(Test2Type::class, $answer, [
+            'propo' => $propo,
             'choice' => $choice,
-            "propo" => $propo,
         ]);
+        */
+        $form = $this->createForm(QuizType::class, $quizz);
+        
+        //$proposition[] = $answerRepo->findOnePropo($id)[0]['proposition'];
+        
+        //$proposition = $proposition[0];
+        //dd($proposition);
+        /*
+        $answer = new Answer();
+        $this->createForm(Quiz3Type::class, $answer, [
+            'proposition' => $proposition,
+        ]);
+        
+        $form = $this->createForm(QuizzType::class, $quizz);
+        */
         $form->handleRequest($request);
-        
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
+        //dd($form);
 
-                return $this->redirectToRoute('quizz_index');
-            }
-        
+        if($form->isSubmitted() && $form->isValid()) {
+           
+            $manager->persist($quizz);
+            $manager->flush();
+
+            return $this->redirectToRoute('quizz_index');
+        }
+
         return $this->render('quizz/toutvoir.html.twig', [      
             'form' => $form->createView(),
+            'questions' => $repo->findAll(),
            
         ]);
+        
     }
 
     /**
@@ -105,7 +178,7 @@ class QuizzController extends AbstractController
      */
     public function edit(Request $request, Quizz $quizz): Response
     {
-        $form = $this->createForm(QuizzType::class, $quizz);
+        $form = $this->createForm(Quiz5Type::class, $quizz);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -134,34 +207,11 @@ class QuizzController extends AbstractController
         return $this->redirectToRoute('quizz_index');
     }
 
-    /**
-     * @Route("/montre/{id}", name="quizz_montre", methods={"GET","POST"})
-     */
-    /*
-    public function montre(Request $request, Quizz $quizz, AnswerRepository $repo): Response
-    {
-        $form = $this->createForm(QuizzType::class, $quizz);
-        $form->handleRequest($request);
-        //$this->createForm(TestType::class, $answer);
-        $answer = new Answer();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('quizz_index');
-        }
-
-        return $this->render('quizz/montre.html.twig', [
-            'quizz' => $quizz,
-            'form' => $form->createView(),
-            'answer' => $repo->findAll(),
-        ]);
-    }
-    */
-
+   
     /**
      * @Route("/voir/{id}", name="quizz_voir", methods={"GET","POST"})
      */
+    /*
     public function voir($id, Request $request, QuestionRepository $repo, AnswerRepository $answerRepo): Response
     {
         $question = $repo->find($id);
@@ -186,5 +236,6 @@ class QuizzController extends AbstractController
             'question' => $question
         ]);
     }
-
+    */
+    
 }

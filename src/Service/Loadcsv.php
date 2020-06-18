@@ -14,7 +14,9 @@ class Loadcsv
         $spreadsheet = new Spreadsheet();
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
         $spreadsheet = $reader->load($fichier);
+        
         $row = 1;
+        $ref = "";
         // Tableau où l'on récupère les questions (label)
         $tabQuestion = [];
         // On compte le nombre de questions
@@ -48,6 +50,9 @@ class Loadcsv
                     $num = count($data);              
                     
                     if($row == 1) {
+                        $titre = $data[0];
+                    }
+                    if($row == 2) {
                         $ref = $data[0];
                     }
                     //echo "<p> $num champs à la ligne $row: <br /></p>\n";
@@ -60,7 +65,7 @@ class Loadcsv
                         $nbProposition++;             
                     }
                     
-                    for ($c=0; $c < $num; $c++) {
+                    for ($c=0; $c <$num; $c++) {
                                                    
                             //echo $data[$c] . "<br />\n"; 
                             if($flagQuestion == 1) {
@@ -108,6 +113,6 @@ class Loadcsv
             $tab2[$i] = $var;
         }
 
-        return [$nbQuestion, $tabQuestion, $choice, $nbProposition, $tab2, $tabProposition, $tabCorrection];
+        return [$nbQuestion, $tabQuestion, $choice, $nbProposition, $tab2, $tabProposition, $tabCorrection, $titre];
     }
 }
