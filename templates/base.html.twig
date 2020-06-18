@@ -48,8 +48,11 @@
                             <a class="nav-link" href="{{ path("testquiz_load") }}">Chargement Excel</a>
                         </li>
                         #}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path("home_quiz") }}">Liste des questions et corrections</a>
+                        </li>
                          <li class="nav-item">
-                            <a class="nav-link" href="{{ path("testquiz_loadcsv") }}">Chargement csv</a>
+                            <a class="nav-link" href="{{ path("testquiz_loadcsv") }}">Chargement d'un fichier csv</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -172,7 +175,7 @@
                     <div class="container">
                         <div class="alert alert-{{ label }}">
                             {% for message in messages %}
-                                <p>{{ message | raw }}</p>
+                                <p class="center">{{ message | raw }}</p>
                             {% endfor %}
                         </div>
                     </div>

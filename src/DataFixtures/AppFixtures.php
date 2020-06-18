@@ -32,7 +32,7 @@ class AppFixtures extends Fixture
                 ->setPhone("0618512746")
                 ->setPicture('https://lh3.googleusercontent.com/a-/AOh14Giy3pomEF4DFzKVvYb03_ATPsjRYypTILMxlnD_=s60-cc-rg')
                 ->setEmail("nuzzo.marcel@aliceadsl.fr")
-                ->setHash($this->encoder->encodePassword($adminUser, '1234'))
+                ->setHash($this->encoder->encodePassword($adminUser, '43014302'))
                 ->setOkquiz(false)
                 ->addUserRole($adminRole);
        

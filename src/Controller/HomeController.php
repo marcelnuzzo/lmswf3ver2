@@ -43,6 +43,8 @@ class HomeController extends AbstractController
     }
 
     /**
+     * Permet de visualiser toutes les questions et les réponses avec leurs corrections
+     * 
      * @Route("/quiz", name="home_quiz")
      */
     public function quiz(AnswerRepository $answer)

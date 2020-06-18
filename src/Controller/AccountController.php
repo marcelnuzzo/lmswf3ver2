@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Service\envoiMail;
 
 class AccountController extends AbstractController
 {
@@ -114,12 +115,11 @@ class AccountController extends AbstractController
      * 
      * @return Response
      */
-    public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
+    public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, EnvoiMail $envoiMail) {
         $passwordUpdate = new PasswordUpdate();
         $user = $this->getUser();
         $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()) {
             // 1. Vérifier que le oldPassword du formulaire soit le même que le password du user
             if(!password_verify($passwordUpdate->getOldPassword(), $user->getHash())) {
@@ -133,9 +133,13 @@ class AccountController extends AbstractController
                 $manager->persist($user);
                 $manager->flush();
 
+                $body="Utilisateur : ".$user->getFirstname().'</br>'."Email : ".$user->getEmail().'</br>'."Mot de passe modifié";
+                $message = $envoiMail->envoi($body);
+                $mailer->send($message);
+
                 $this->addFlash(
                     'success',
-                    "Votre mot de passe a bien été modifié !"
+                    "Votre mot de passe a bien été modifié et un mail vous a été envoyé."
                 );
 
                 return $this->redirectToRoute('homepage');
