@@ -33,4 +33,5 @@ class AdminAccountController extends AbstractController
     public function logout() {
         // ...
     }
+
 }

@@ -20,6 +20,7 @@ use App\Service\envoiMail;
 
 class AccountController extends AbstractController
 {
+
     /**
      * Permet d'afficher et de gérer le formulaire de connexion
      * @Route("/login", name="account_login")
