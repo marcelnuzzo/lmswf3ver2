@@ -103,7 +103,7 @@ class QuizzController extends AbstractController
     /**
      * @Route("/toutvoir/{id}", name="quizz_toutvoir", methods={"GET","POST"})
      */
-    public function toutvoir(Answer $answer, $id, Request $request, QuestionRepository $repo, AnswerRepository $answerRepo, EntityManagerInterface $manager, Quizz $quizz)
+    public function toutvoir($id, Request $request, QuestionRepository $repo, AnswerRepository $answerRepo, EntityManagerInterface $manager, Quizz $quizz)
     {
         
         $firstQuestion = $repo->findFirstId()[0]['id'];
@@ -119,29 +119,28 @@ class QuizzController extends AbstractController
             $propo[] = $answerRepo->findProposition()[$i]['proposition'];
         }
         $propo = $propo[0];
-        //dd($propo);
+        
         $id = $repo->findFirstId()[0]['id'];
-        $rep = true;
-        //$proposition = $answerRepo->findPropo($id)[0]['proposition'];
-        //$answer = new Answer();
-        /*
+        
+        $answer = new Answer();
+        
         $this->createForm(Test2Type::class, $answer, [
             'propo' => $propo,
             'choice' => $choice,
         ]);
-        */
+        
         $form = $this->createForm(QuizType::class, $quizz);
         
-        //$proposition[] = $answerRepo->findOnePropo($id)[0]['proposition'];
+        $proposition[] = $answerRepo->findOnePropo($id)[0]['proposition'];
         
-        //$proposition = $proposition[0];
+        $proposition = $proposition[0];
         //dd($proposition);
         /*
         $answer = new Answer();
         $this->createForm(Quiz3Type::class, $answer, [
             'proposition' => $proposition,
         ]);
-        
+        /*
         $form = $this->createForm(QuizzType::class, $quizz);
         */
         $form->handleRequest($request);
