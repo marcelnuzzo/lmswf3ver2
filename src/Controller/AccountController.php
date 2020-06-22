@@ -101,6 +101,7 @@ class AccountController extends AbstractController
                 'success',
                 "Les données du profil ont été enregistrées avec succès !"
             );
+            return $this->redirectToRoute('homepage');
         }
         
         return $this->render('account/profileEdit.html.twig', [

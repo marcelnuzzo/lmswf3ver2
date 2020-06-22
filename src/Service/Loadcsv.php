@@ -39,6 +39,7 @@ class Loadcsv
 
         // On ouvre le fichier de type csv
         if (($handle = fopen($fichier, "r")) !== FALSE) {
+            
             // On récupère les éléments séparés par un point virgule
             while (($data = fgetcsv($handle, 1000, ";", "'")) !== FALSE) {
                 // Si la ligne n'est pas vide

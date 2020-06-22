@@ -54,7 +54,7 @@ class User implements UserInterface
     private $userRoles;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $phone;
 

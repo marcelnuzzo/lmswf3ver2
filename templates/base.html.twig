@@ -26,11 +26,9 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="{{ path("homepage") }}">Accueil<span class="sr-only">(current)</span></a>
                         </li>
-                        {#
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path("user_listRole") }}">Liste des rôles</a>
+                            <a class="nav-link" href="#">Quizz</a>
                         </li>
-                       #}
                        {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path("question_index") }}">Table questions</a>
@@ -72,6 +70,9 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-rigth" aria-labelledby="accountDopdownLink">
                                 <a href="{{ path('account_index') }}" class="dropdown-item">Mon profil</a>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <a href="#" class="dropdown-item">Les profils</a>
+                                {% endif %}
                                 <a href="{{ path('account_profileEdit') }}" class="dropdown-item">Modifier mon profil</a>
                                 <a href="{{ path('account_password') }}" class="dropdown-item">Modifier mon mot de passe</a>
                                 <div class="dropdown-divider"></div>

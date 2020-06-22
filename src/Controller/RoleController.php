@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\RoleRepository;
 use App\Service\envoiMail;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,10 +17,10 @@ class RoleController extends AbstractController
     /**
      * @Route("/role", name="role")
      */
-    public function index()
+    public function index(RoleRepository $repo)
     {
         return $this->render('role/index.html.twig', [
-            'controller_name' => 'RoleController',
+            'roles' => $repo->findAll(),
         ]);
     }
 
@@ -42,6 +43,7 @@ class RoleController extends AbstractController
      */
     public function editRole(\Swift_Mailer $mailer,User $user, Request $request, EntityManagerInterface $manager, envoiMail $envoiMail) 
     {
+        /*
         $form = $this->createFormBuilder($user)
             ->add('roles', CollectionType::class, [
                 'entry_type'   => ChoiceType::class,
@@ -68,9 +70,9 @@ class RoleController extends AbstractController
                 return $this->redirectToRoute('listeRole',['id' => $user->getId()
                 ]);
             }
-       
+        */
         return $this->render('role_editRole.html.twig', [
-            'form' => $form->createView(),
+            //'form' => $form->createView(),
         ]);
     }
 }

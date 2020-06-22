@@ -29,9 +29,11 @@
                 </div>
             </div>
             <div class="col">
-                <h2 class="heading">Photo de profil de {{ app.user.fullname }}</h2>
-                <hr>
+                <h2 class="heading">Photo de {{ app.user.fullname }}</h2>
                 <img src="/allImages/032.jpg" alt="" width="200" heigth="auto">
+                <div class="mt-2">
+                    <button class="btn btn-info">Charger une autre photo</button>
+                </div>
             </div>
         </div>
         {{ form_widget(form) }}

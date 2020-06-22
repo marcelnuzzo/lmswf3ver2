@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Service\Loadcsv;
+use Exception;
 
 class TestquizController extends AbstractController
 {
@@ -81,8 +82,12 @@ class TestquizController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
 
+            
             $donnee = $form->getData();
             $fichier = $donnee['Chargement'];
+            $filename = substr(strrchr($fichier, "."), 1);
+            if($filename == "csv") {
+                
             $nbQuestion = $loadcsv->getRead3($fichier)[0];
             $tabQuestion = $loadcsv->getRead3($fichier)[1];
             $choice = $loadcsv->getRead3($fichier)[2];
@@ -130,7 +135,19 @@ class TestquizController extends AbstractController
                         $ctr++;
             }   
             $manager->flush();
+            $this->addFlash(
+                'success',
+                "Enregistrement dans la base de données OK"
+            );
             return $this->redirectToRoute('homepage');
+            } else {
+        
+                $this->addFlash(
+                    'danger',
+                    "Le fichier que vous voulez charger n'existe pas ou sinon ce n'est pas un fichier Excel avec l'extension csv"
+                );
+            }
+        
         }
          return $this->render('testquiz/loadcsv.html.twig', [
             'form' => $form->createView(),      

@@ -23,11 +23,11 @@ class RegistrationType extends ApplicationType
             ->add('firstName', TextType::class, $this->getConfiguration("Prénom", "Votre prénom..."))
             ->add('lastName', TextType::class, $this->getConfiguration("Nom", "Votre nom de famille"))
             ->add('email', EmailType::class, $this->getConfiguration("Email", "Votre adresse email"))
-            ->add('picture', UrlType::class, $this->getConfiguration("Photo de profil", "URL de votre avatar ..."))
+            ->add('picture', UrlType::class, $this->getConfiguration("Photo", "exemple d'url: http:\\adresse-de-mon-avatar", ['required' => false]))
             ->add('hash', PasswordType::class, $this->getConfiguration("Mot de passe", "Choisissez un mot de passe"))
             ->add('passwordConfirm', PasswordType::class, $this->getConfiguration('Confirmation de mot de passe', "Veuillez confirmer votre mot de passe"))
             ->add('birthAt', DateType::class, $this->getConfiguration("Date de naissance", "Donner votre date de naissance", ["widget" => "single_text"]))
-            ->add('phone', TextType::class, $this->getConfiguration("Numéro de téléphone", "Donner votre numéro de téléphone"))
+            ->add('phone', TextType::class, $this->getConfiguration("Numéro de téléphone", "Donner votre numéro de téléphone", ['required' => false]))
             
         ;
     }
