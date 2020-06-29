@@ -1,0 +1,77 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>User</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>BirthAt</th>
+                <td>{{ user.birthAt ? user.birthAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ user.phone }}</td>
+            </tr>
+            <tr>
+                <th>Picture</th>
+                <td>{{ user.picture }}</td>
+            </tr>
+            <tr>
+                <th>Hash</th>
+                <td>{{ user.hash }}</td>
+            </tr>
+            <tr>
+                <th>Okquiz</th>
+                <td>{{ user.okquiz ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>userRoles</th>
+                
+                
+                <ul>
+                
+                    <td>
+                    {% for role in user.roles %}
+                        <li>{{role}}</li>
+                    {% endfor %}
+                    </td>
+                    {#
+                    {% for role in user.roles %}
+                    <li>
+                    <td>{{ role.userRoles}}</td>
+                    </li>
+                    {% endfor %}
+                     #}
+                </ul>
+               
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-info" href="{{ path('admin_user_index') }}">Retour à la liste</a>
+
+    <a class="btn btn-warning" href="{{ path('admin_user_edit', {'id': user.id}) }}">Editer</a>
+
+    {{ include('admin/user/_delete_form.html.twig') }}
+</div>
+{% endblock %}

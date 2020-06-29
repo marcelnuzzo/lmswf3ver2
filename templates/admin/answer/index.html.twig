@@ -1,0 +1,43 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Réponses{% endblock %}
+
+{% block body %}
+    
+<div class="container">
+    <h1 class="mt-3">Réponses</h1>
+        <a class="btn btn-primary mt-2 mb-2" href="{{ path('admin_answer_new') }}">Créer une nouvelle réponse</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Proposition</th>
+                <th>Correction</th>
+                <th>Question</th>
+                <th>Quizz</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for answer in answers %}
+            <tr>
+                <td>{{ answer.id }}</td>
+                <td>{{ answer.proposition }}</td>
+                <td>{{ answer.correction }}</td>
+                <td>{{ answer.questions.label }}</td>
+                <td>{{ answer.questions.quizz.id }}</td>
+                <td>
+                    <a class="btn btn-info mb-2" href="{{ path('admin_answer_show', {'id': answer.id}) }}">Voir</a>
+                    <a class="btn btn-warning" href="{{ path('admin_answer_edit', {'id': answer.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Pas d'enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+   
+{% endblock %}

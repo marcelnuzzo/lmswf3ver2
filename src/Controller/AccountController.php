@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\AccountType;
 use App\Entity\PasswordUpdate;
+use App\Entity\Role;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
+use App\Repository\RoleRepository;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,23 +57,30 @@ class AccountController extends AbstractController
      * 
      * @return Response
      */
-    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
+    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, EnvoiMail $envoiMail, RoleRepository $repo) {
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
-
+        $role = $repo->findAll();
+        
         if($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
             $user->setOkquiz(false);
-
+            $role[1]->getTitle();
+            dd($role[1]);
+            //$user->addUserRole($role[1]);
             $manager->persist($user);
+            
             $manager->flush();
+            $body="Utilisateur : ".$user->getFirstname().'</br>'."Email : ".$user->getEmail().'</br>'."Inscription confirmée";
+                $message = $envoiMail->envoi($body);
+                $mailer->send($message);
 
             $this->addFlash(
                 'success',
-                "Votre compte a bien été créer ! Vous pouvez maintenant vous connecter !"
+                "Votre compte a bien été créer et un mail vous a été envoyé ! Vous pouvez maintenant vous connecter !"
             );
             return $this->redirectToRoute('account_login');
         }

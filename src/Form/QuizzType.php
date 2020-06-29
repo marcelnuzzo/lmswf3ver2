@@ -13,10 +13,7 @@ class QuizzType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('question', CollectionType::class, [
-            'entry_type' => QuestionType::class,
-            'entry_options' => ['label' => false],
-        ])
+        $builder->add('titre')
         ;
     }
 

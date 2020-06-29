@@ -19,6 +19,7 @@ class QuizzRepository extends ServiceEntityRepository
         parent::__construct($registry, Quizz::class);
     }
 
+    /*
     public function findFirstId ()
     {
         return $this->createQueryBuilder('q')
@@ -29,6 +30,7 @@ class QuizzRepository extends ServiceEntityRepository
                     ->getResult()
                     ;
     }
+    */
 
     // /**
     //  * @return Quizz[] Returns an array of Quizz objects

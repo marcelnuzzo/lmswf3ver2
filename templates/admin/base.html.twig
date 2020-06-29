@@ -29,22 +29,28 @@
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path("question_index") }}">Table questions</a>
+                            <a class="nav-link" href="{{ path("admin_question_index") }}">Liste des questions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path("answer_index") }}">Table réponses</a>
+                            <a class="nav-link" href="{{ path("admin_answer_index") }}">Liste des réponses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path("quizz_index") }}">Table quizz</a>
+                            <a class="nav-link" href="{{ path("admin_quizz_index") }}">Liste des quizz</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path("home_userQuiz") }}">Quiz</a>
+                            <a class="nav-link" href="{{ path("admin_role_index") }}">Liste des rôles</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path("testquiz_load") }}">Chargement Excel</a>
+                            <a class="nav-link" href="{{ path("admin_user_index") }}">Liste des utilisateurs</a>
+                        </li>
+                       <li class="nav-item">
+                            <a class="nav-link" href="{{ path("admin_dashboard") }}">Liste des questions et corrections</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path("admin_load_loadxls") }}">Chargement Excel xlsx</a>
                         </li>
                          <li class="nav-item">
-                            <a class="nav-link" href="{{ path("testquiz_loadcsv") }}">Chargement csv</a>
+                            <a class="nav-link" href="{{ path("admin_load_loadcsv") }}">Chargement csv</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -52,14 +58,15 @@
                         {% if app.user %}
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="accountDopdownLink">
-                                <img src="{{ app.user.picture }}" alt="Avatar de {{app.user.firstname}}" width="24px" height="auto">Profil
+                                Les profils
                             </a>
                             <div class="dropdown-menu dropdown-menu-rigth" aria-labelledby="accountDopdownLink">
-                                <a href="{{ path('account_index') }}" class="dropdown-item">Mon profil</a>
-                                <a href="{{ path('account_profileEdit') }}" class="dropdown-item">Modifier mon profil</a>
-                                <a href="{{ path('account_password') }}" class="dropdown-item">Modifier mon mot de passe</a>
+                                <a href="{{ path('admin_account_index') }}" class="dropdown-item">Mon profil</a>
+                                <a href="#" class="dropdown-item">Tous les profils</a>
+                                <a href="{{ path('admin_account_profileEdit') }}" class="dropdown-item">Modifier mon profil</a>
+                                <a href="{{ path('admin_account_password') }}" class="dropdown-item">Modifier mon mot de passe</a>
                                 <div class="dropdown-divider"></div>
-                                <a href="{{ path('account_logout') }}" class="dropdown-item">Déconnexion</a>
+                                <a href="{{ path('admin_account_logout') }}" class="dropdown-item">Déconnexion</a>
                             </div>
                         </li>
                         {% else %}

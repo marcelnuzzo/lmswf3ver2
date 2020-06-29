@@ -1,0 +1,29 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Rôle{% endblock %}
+
+{% block body %}
+ <div class="container">
+    <h1>Rôle</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ role.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ role.title }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-info mb-2" href="{{ path('admin_role_index') }}">Retour à la liste</a>
+
+    {#<a class="btn btn-warning ml-5" href="{{ path('admin_role_edit', {'id': role.id}) }}">Editer</a>#}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        {{ include('admin/role/_delete_form.html.twig') }}
+    {% endif %}
+</div>
+{% endblock %}

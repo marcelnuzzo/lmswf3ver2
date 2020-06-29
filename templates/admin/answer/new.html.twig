@@ -1,0 +1,13 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Nouvelle réponse{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Créer nouvelle réponse</h1>
+
+    {{ include('admin/answer/_form.html.twig') }}
+
+    <a class="btn btn-secondary mt-2" href="{{ path('admin_answer_index') }}">Retour à la liste</a>
+</div>
+{% endblock %}

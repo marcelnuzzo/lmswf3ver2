@@ -6,6 +6,7 @@ use App\Entity\Answer;
 use App\Entity\Question;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +16,14 @@ class AnswerType extends AbstractType
     {
         $builder
             ->add('proposition')
-            ->add('correction')
+            ->add('correction', ChoiceType::class, [
+                'choices' => [
+                    "vrai" => "vrai",
+                    "faux" => "faux",
+                ],
+                'expanded' => true,
+                'multiple' => false,
+            ])
             ->add('questions', EntityType::class, [
                 'class' => Question::class,
                 'choice_label' => 'label'

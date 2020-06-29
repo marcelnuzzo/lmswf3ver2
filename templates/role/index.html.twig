@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Rôle index{% endblock %}
+{% block title %}Role index{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1>Rôle index</h1>
+    <h1>Role index</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Titre</th>
+                <th>Title</th>
+                <th>Utilisateurs</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,15 +20,24 @@
                 <td>{{ role.id }}</td>
                 <td>{{ role.title }}</td>
                 <td>
-                    <a href="{{ path('role_listerole', {'id': role.id}) }}">voir</a>                
+                    <ul>
+                        {% for user in role.users %}
+                            <li>{{user.fullname}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <a href="{{ path('role_show', {'id': role.id}) }}">show</a>
+                    <a href="{{ path('role_edit', {'id': role.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">no records found</td>
+                <td colspan="3">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-</div>
+
+    <a href="{{ path('role_new') }}">Create new</a>
 {% endblock %}

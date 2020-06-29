@@ -1,0 +1,35 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Quizz{% endblock %}
+
+{% block body %}
+<div class="container mt-2">
+    <h1>Quizz</h1>
+    <a class="btn btn-primary mb-3" href="{{ path('admin_quizz_new') }}">Créer nouveau quizz</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for quizz in quizzs %}
+            <tr>
+                <td>{{ quizz.id }}</td>
+                <td>{{ quizz.titre }}</td>
+                <td>
+                    <a class="btn btn-info mr-2" href="{{ path('admin_quizz_show', {'id': quizz.id}) }}">Voir</a>
+                    <a class="btn btn-warning" href="{{ path('admin_quizz_edit', {'id': quizz.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Pas d'enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Page de {{ user.fullName }}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row mt-3">
+        <h1>Mon profil</h1>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="fa fa-info" aria-hidden="true"></i>&nbsp;
+                        Informations personnelles
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fa fa-user" aria-hidden="true">&nbsp;</i>
+                            <strong>Prénom : </strong>{{ user.firstname }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-user" aria-hidden="true">&nbsp;</i>
+                            <strong>Nom : </strong>{{ user.lastname }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-birthday-cake" aria-hidden="true">&nbsp;</i>
+                            <strong>Date de naissance : </strong>{{ user.birthAt | date("d/m/Y") }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-envelope" aria-hidden="true">&nbsp;</i>
+                            <strong>Email : </strong>{{ user.email }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-phone" aria-hidden="true">&nbsp;</i>
+                            <strong>Téléphone : </strong>{{ user.email }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">Photo de : <br>{{ app.user.fullname }}</h2>
+                    <img src="/allImages/032.jpg" alt="text" title="photo de {{ app.user.fullname }}" width="250" height="auto"> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

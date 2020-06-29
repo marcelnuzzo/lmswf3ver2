@@ -43,29 +43,13 @@ class HomeController extends AbstractController
     }
 
     /**
-     * Permet de visualiser toutes les questions et les réponses avec leurs corrections
-     * 
-     * @Route("/quiz", name="home_quiz")
-     */
-    public function quiz(AnswerRepository $answer)
-    {      
-        $answers = $this->getDoctrine()
-        ->getRepository(Answer::class)
-        ->findAll();
-        //->findBy(['correction' => 'vrai"']);
-        return $this->render('home/quiz.html.twig', [
-            'answers' => $answers
-        ]);
-    }
-
-    /**
      * @Route("/userQuiz", name="home_userQuiz")
      */
     public function userQuiz(Request $request, EntityManagerInterface $manager, AnswerRepository $repo, QuestionRepository $questionRepo, UserRepository $userRepo)
     {
-        $question = $questionRepo->findFirstId()[0]['id'];
-        $id = $question;
         
+        $question = $questionRepo->findFirstId()[0]['id'];
+        $id = $question;  
         $tabPropo = [];
         for($i=0; $i<3; $i++) {
             $answers = $repo->findPropo($id)[$i];
@@ -79,41 +63,33 @@ class HomeController extends AbstractController
             'tabPropo' => $tabPropo,
         ]);
         $form->handleRequest($request);
-
         $count = 0;
-        $user = $this->getUser()->getId(); 
-                    
-        $user = $userRepo->find($user);
         $ok = "";
-        if($user->getOkquiz() != 0)
-            $ok = true;
-        else
-            $ok = false;
-        //$user = $user->getOkquiz();
-        //dd($count); 
+        $user = $this->getUser();
+        if($user != null) {
+            $user = $this->getUser()->getId();   
+            $user = $userRepo->find($user);    
+            if($user->getOkquiz() != 0)
+                $ok = true;
+            else
+                $ok = false;
+        }
+        
         if($form->isSubmitted() && $form->isValid()) {
             
             $correction = $repo->findByCorrection($question);  
-            
             $correction = $correction[0]->getId();   
-            
-            //dd($correction);  
-            $info = $form->getData();
-            
-            dd($info);
             $idProposition = $answer->getProposition();
-            
-            dd($idProposition);
-            
             if($correction == $idProposition){
-                $user->setOkquiz(true);
-                //dd($user);
-                $manager->persist($user);
-                $manager->flush();
-                $count++;  
+                if($user != null) {
+                    $user->setOkquiz(true);
+                    $manager->persist($user);
+                    $manager->flush();
+                    $count++;
+                }  
                 $this->addFlash(
                     'success',
-                    "Vous avez une bonne réponse"
+                    "Bonne réponse"
                 );
                 return $this->redirectToRoute('home_userQuiz');
             } else {
@@ -132,61 +108,6 @@ class HomeController extends AbstractController
             'ok' => $ok,
             'questions' => $questionRepo->findAll(),
         ]);
-    }
-
-
-    /**
-     * @Route("load", name="testquiz_load")
-     */
-    public function loadform(Request $request, EntityManagerInterface $manager, Readfile $readfile) 
-    {
-        $form = $this->createForm(LoadType::class);
-        $form->handleRequest($request);
-
-        
-        if($form->isSubmitted() && $form->isValid()) {
-            $donnee = $form->getData();
-            $fichier = $donnee['Chargement'];
-            $getHighestRow1 = $readfile->getRead2($fichier)[0];
-            $getHighestRow2 = $readfile->getRead2($fichier)[2];
-            $valCell1 = $readfile->getRead2($fichier)[1];
-            $valCell2 = $readfile->getRead2($fichier)[3];
-            //$sheet = $readfile->getRead2($fichier);
-            
-                $ctr=0;
-                for($i=1; $i<=$getHighestRow2; $i++) {
-                    $question = new Question();
-                    $question->setLabel($valCell2[$ctr]);
-                    $ctr++;               
-                    $manager->persist($question);
-                }
-                $manager->flush();
-
-                $questionRepo = $manager->getRepository('App:Question');
-                $ctr=0;
-                $ctr2=1;
-                for($i=1; $i<=$getHighestRow1; $i++) {
-                    $answer = new Answer();
-                    $answer->setQuestions($questionRepo->find($ctr2));
-                    $ctr++;
-                    $answer->setProposition($valCell1[$ctr]);
-                    $ctr++;
-                    $answer->setCorrection($valCell1[$ctr]);
-                    $ctr++;                
-                    $manager->persist($answer);
-                    if($i == 3) {
-                        $ctr2++;
-                    }
-                }
-                $manager->flush();
-                
-            }
-        
-        return $this->render('testquiz/load.html.twig', [
-            'form' => $form->createView(),
-           
-        ]);
-
     }
 
     /**

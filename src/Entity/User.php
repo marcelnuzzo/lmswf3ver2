@@ -49,7 +49,7 @@ class User implements UserInterface
     private $birthAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Role", inversedBy="users", cascade={"persist"})
      */
     private $userRoles;
 
@@ -149,6 +149,13 @@ class User implements UserInterface
     {
         return $this->userRoles;
     }
+
+    
+    public function setUserRoles($userRoles)
+    {
+        $this->userRoles = $userRoles;
+    }
+    
 
     public function addUserRole(Role $userRole): self
     {

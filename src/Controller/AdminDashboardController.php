@@ -2,29 +2,30 @@
 
 namespace App\Controller;
 
+use App\Entity\Answer;
 use App\Service\StatsService;
+use App\Repository\AnswerRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class AdminDashboardController extends AbstractController
 {
+
     /**
+     * Permet de visualiser toutes les questions et les réponses avec leurs corrections
+     * 
      * @Route("/admin", name="admin_dashboard")
      */
-    public function index(EntityManagerInterface $manager)
-    {
-        /*
-        $stats = $statsService->getStats();
-        $bestAds = $statsService->getAdsStats('');
-        $worstAds = $statsService->getAdsStats('ASC');
-        */
+    public function index()
+    {      
+        $answers = $this->getDoctrine()
+        ->getRepository(Answer::class)
+        ->findAll();
+        //->findBy(['correction' => 'vrai"']);
         return $this->render('admin/dashboard/index.html.twig', [
-            /*
-            'stats' => $stats,
-            'bestAds' => $bestAds,
-            'worstAds' => $worstAds
-            */
-            ]);
+            'answers' => $answers
+        ]);
     }
 }
