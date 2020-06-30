@@ -6,8 +6,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class Loadcsv
 {
-
-    
     public function getRead3($fichier)
     {
         //define("ECART", 2);
