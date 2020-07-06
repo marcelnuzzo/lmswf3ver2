@@ -175,49 +175,35 @@ class AdminLoadController extends AbstractController
     {
         $question = $questionRepo->findFirstId()[0]['id'];
         $id = $question;
-        
         $tabPropo = [];
         for($i=0; $i<3; $i++) {
             $answers = $repo->findPropo($id)[$i];
             $answers = $answers['proposition'];
             $tabPropo[] = $answers;
         }
-        
         $answer = new Answer();
         $form = $this->createForm(Quiz4Type::class, $answer, [
             'question' => $question,
             'tabPropo' => $tabPropo,
         ]);
         $form->handleRequest($request);
-
         $count = 0;
         $user = $this->getUser()->getId(); 
-                    
         $user = $userRepo->find($user);
         $ok = "";
         if($user->getOkquiz() != 0)
             $ok = true;
         else
             $ok = false;
-        //$user = $user->getOkquiz();
-        //dd($count); 
-        if($form->isSubmitted() && $form->isValid()) {
-            
+        if($form->isSubmitted() && $form->isValid()) { 
             $correction = $repo->findByCorrection($question);  
-            
             $correction = $correction[0]->getId();   
-            
-            //dd($correction);  
             $info = $form->getData();
-            
             dd($info);
             $idProposition = $answer->getProposition();
-            
             dd($idProposition);
-            
             if($correction == $idProposition){
                 $user->setOkquiz(true);
-                //dd($user);
                 $manager->persist($user);
                 $manager->flush();
                 $count++;  

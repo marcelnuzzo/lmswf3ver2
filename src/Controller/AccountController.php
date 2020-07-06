@@ -68,8 +68,8 @@ class AccountController extends AbstractController
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
             $user->setOkquiz(false);
-            $role[1]->getTitle();
-            dd($role[1]);
+            //$role[1]->getTitle();
+            //dd($role[1]);
             //$user->addUserRole($role[1]);
             $manager->persist($user);
             

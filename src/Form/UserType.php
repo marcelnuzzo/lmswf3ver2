@@ -29,7 +29,7 @@ class UserType extends AbstractType
             ->add('phone', TextType::class, ['label' => 'Téléphone'])
             ->add('picture', TextType::class, ['label' => 'Photo'])
             ->add('hash', PasswordType::class, ['label' => 'Mot de passe'])
-            ->add('okquiz', CheckboxType::class, ['label' => 'Résultat quizz'])
+            ->add('okquiz', CheckboxType::class, ['label' => 'Résultat quizz', 'required' => false])
             /*
             ->add('userRoles', EntityType::class, [
                 'class' => Role::class,
