@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Quizz;
+use App\Form\RepType;
 use App\Entity\Answer;
 use App\Form\QuizType;
 use App\Form\TestType;
@@ -10,6 +11,8 @@ use App\Form\Quiz3Type;
 use App\Form\Quiz5Type;
 use App\Form\QuizzType;
 use App\Form\Test2Type;
+use App\Entity\Question;
+use App\Form\Question2Type;
 use App\Repository\QuizzRepository;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
@@ -37,22 +40,16 @@ class QuizzController extends AbstractController
     /**
      * @Route("/essaiform/{id}", name="quizz_essaiform")
      */
-    /*
-    public function essaiform(Quizz $quizz, QuizzRepository $repo, EntityManagerInterface $manager, Request $request, QuestionRepository $qRepo) {
-        $quizz = $repo->find(3);
-        $choix = $qRepo->findLibre();
-        //dd($choix);
-        $form = $this->createForm(QuizzType::class, $quizz);
+    public function essaiform(Question $question, EntityManagerInterface $manager, Request $request, QuestionRepository $repo) {
+        
+        $form = $this->createForm(Question2Type::class, $question);
         $form->handleRequest($request);
-        //echo "test";
-        //echo $_POST['name'];
+        $questions = $repo->findAll();
+       
         if ($form->isSubmitted() && $form->isValid()) {
-            $info = $form->getData();
-            //dd($info);
-            echo("test");
             
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($quizz);
+            $entityManager->persist($question);
             $entityManager->flush();
 
             //return $this->redirectToRoute('quizz_index');
@@ -61,11 +58,10 @@ class QuizzController extends AbstractController
 
         return $this->render('quizz/essaiform.html.twig', [
             'form' => $form->createView(),
-            'quizz' => $quizz,
-            'choix' => $choix,
+            'questions' => $questions,
+            
         ]);
     }
-    */
 
     /**
      * @Route("/list", name="quizz_list", methods={"GET"})
@@ -108,11 +104,12 @@ class QuizzController extends AbstractController
         
         $firstQuestion = $repo->findFirstId()[0]['id'];
         $countQuestion = $repo->findCountQuestion();
+        /*
         for($id=$firstQuestion; $id<($firstQuestion + $countQuestion); $id++) {
             $question[] = $repo->find($id);
             $choice[] = $repo->findByQId($id)[0]['choice'];
         }
-
+        */
         
         $countPropos = $answerRepo->findCountPropo();
         for($i=0; $i<$countPropos; $i++) {
@@ -126,7 +123,7 @@ class QuizzController extends AbstractController
         
         $this->createForm(Test2Type::class, $answer, [
             'propo' => $propo,
-            'choice' => $choice,
+            //'choice' => $choice,
         ]);
         
         $form = $this->createForm(QuizType::class, $quizz);

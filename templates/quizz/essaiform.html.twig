@@ -1,115 +1,19 @@
-{#}
-Quizz : QuizzAmath
-
-Bakhtech a été crée :
-2000
-2018
-2020
-
-RGAA couvre les handicap suivants :
-Visuel
-Moteur
-PolyHandicap
-
-Sigle des normes officielles du W3C ?
-Champ texte ===>
-
-Bouton ===> Valider
-#}
 {% extends "base.html.twig" %}
 
 {% block title %}Quizz{% endblock %}
 
 {% block body %}
 <div class="container">
-{#
-{{ form_start(form) }}       
-        {{form_widget(form)}}
-        <button class="btn btn-primary" type="submit">
-            Valider
-        </button>
-{{ form_end(form) }}
-#}
 
-<form action="..\test.php" method="post">
-
-    <h1>Quizz : {{ quizz.titre }}</h1>
-
-    {% for question in quizz.question %}
-
-    <h2>{{ question.label  }}</h2>
-
-        {% if question.choice == 'unique"' %}
-            {% for answer in question.answers %}
-                <div>
-                     <input type="radio" class="radio" id="" name="{{question.id}}" value="">
-                    <label for="rbox">{{ answer.proposition }}</label>
-                </div>
-            {% endfor %}
-        {% endif %}
-        {% if question.choice == 'multiple"' %}
-            {% for answer in question.answers %}
-                <div>
-                     <input type="checkbox" class="check" id="cbox" name="{{question.id}}" value="">
-                    <label for="cbox">{{ answer.proposition }}</label>
-                </div>
-            {% endfor %}
-        {% endif %}
-        {% if question.choice == 'libre"' %}
-            {#{% for answer in question.answers %}#}
-            {% for choix in choix %}
-                <div>
-                     <input type="text" id="texte" name="{{question.label}}">
-                </div>
-            {% endfor %}
-            {#{% endfor %}#}
-        {% endif %}
-
+    {% for question in questions %}
+        {{ question.label }}
+        {{ form_start(form) }}
+             {{form_widget(form)}}
+        {{ form_end(form) }}
     {% endfor %}
-    <div class="button">
-        <button type="submit">Envoyer</button>
-    </div>
-{#
-        <h2>Bakhtech a été crée en :</h2>
-        <div>
-            <label for="">2000</label>
-            <input type="radio" id="1" name="question1" value="">
-        </div>
-        <div>
-            <label>2018</label>
-            <input type="radio" id="2" name="question1" value="">
-        </div>
-        <div>
-            <label>2020</label>
-            <input type="radio" id="3" name="question1" value="">
-        </div>
-    <hr>
-    <fieldset>
-    <h2>RGAA couvre les handicap suivants :</h2>
-        <div>
-            <input type="checkbox" id="" name="" value="">
-            <label for="">Visuel</label>
-        </div>
-        <div>
-            <input type="checkbox" id="" name="" value="">
-            <label for="">Moteur</label>
-        </div>
-        <div>
-            <input type="checkbox" id="" name="" value="">
-            <label for="">PolyHandicap</label>
-        </div>
-    </fieldset>
-    <hr>
-    <div>
-        <label for="">Sigle des normes officielles du W3C ?</label>
-        <input type="text" id="" name="" value="">
-    </div>
-    <hr>
-    <div class="button">
-        <button type="submit">Envoyer</button>
-    </div>
-    #}
-</form>
+     <button class="btn btn-primary" type="submit">
+        Valider
+    </button>
 
 </div>
 {% endblock %}

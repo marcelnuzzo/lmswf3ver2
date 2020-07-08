@@ -39,7 +39,7 @@ class QuestionRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('q')
                     ->select('q.id')
-                    ->orderBy('q.id', 'ASC')
+                    ->orderBy('q.id', 'DESC')
                     ->setMaxResults(1)
                     ->getQuery()
                     ->getResult()

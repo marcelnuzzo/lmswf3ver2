@@ -56,7 +56,7 @@ class HomeController extends AbstractController
             $answers = $answers['proposition'];
             $tabPropo[] = $answers;
         }
-        
+        dd($request);
         $answer = new Answer();
         $form = $this->createForm(Quiz4Type::class, $answer, [
             'question' => $question,
